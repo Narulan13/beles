@@ -97,8 +97,7 @@ python-dateutil
 python-dotenv            
 python-youtube           
 pyttsx3                  
-pytz                     
-pywin32                  
+pytz                                     
 pywinpty                 
 pyzmq                    
 requests                 
