@@ -4,7 +4,3 @@ wheel
 aiogram
 openpyxl
 python-dotenv
-sys
-logging
-asyncio
-os
