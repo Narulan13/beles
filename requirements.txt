@@ -3,7 +3,7 @@ setuptools
 wheel
 aiogram
 openpyxl
-dotenv
+python-dotenv
 sys
 logging
 asyncio
