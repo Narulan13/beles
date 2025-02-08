@@ -6,9 +6,10 @@ from os import getenv
 from aiogram import Bot, Dispatcher, html
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
-from aiogram.filters import Command
+from aiogram.filters import CommandStart
 from aiogram.types import Message
 from aiogram import types
+from aiogram.filters.command import Command
 from openpyxl import load_workbook, Workbook
 from dotenv import load_dotenv
 
@@ -17,9 +18,6 @@ load_dotenv()
 TOKEN = getenv("BOT_TOKEN")
 EXCEL_FILE_FB = getenv("EXCEL_FILE_FB")
 EXCEL_FILE_Q = getenv("EXCEL_FILE_Q")
-
-if not TOKEN:
-    raise ValueError("Токен бота не найден! Проверьте .env")
 
 dp = Dispatcher()
 
@@ -51,6 +49,7 @@ def save_question(username, message):
     except Exception as e:
         print(f"Ошибка при записи в Excel: {e}")
 
+
 @dp.message(Command("start"))
 async def cmd_start(message: types.Message):
     kb = [
@@ -66,7 +65,6 @@ async def cmd_start(message: types.Message):
 
 feedback_users = set()
 questions = set()
-
 @dp.message()
 async def handle_message(message: Message):
     if message.text == "Написать отзыв":
@@ -86,13 +84,8 @@ async def handle_message(message: Message):
         save_question(message.from_user.username or "No username", message.text)
         questions.remove(message.from_user.id)
         await message.answer("Спасибо за ваш вопрос! Ждите ответ в нашем телеграм сообществе.")
-
 async def main():
     bot = Bot(token=TOKEN, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
-
-    # Удаляем Webhook перед запуском polling
-    await bot.delete_webhook(drop_pending_updates=True)
-
     await dp.start_polling(bot)
 
 if __name__ == "__main__":
